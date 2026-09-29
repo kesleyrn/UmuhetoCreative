@@ -58,16 +58,17 @@
 
 <main>
   <!-- ======================= PAGE HERO ======================= -->
-  <section class="page-hero">
+  <section class="page-hero page-hero--slideshow" data-collections-slideshow>
+    <div class="page-hero__slides" aria-hidden="true">
+      <img class="page-hero__slide is-active" src="Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4133.jpg" alt="" />
+      <img class="page-hero__slide" src="Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4153.jpg" alt="" />
+      <img class="page-hero__slide" src="Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4282.jpg" alt="" />
+      <img class="page-hero__slide" src="Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4307.jpg" alt="" />
+    </div>
     <div class="wrap">
       <p class="eyebrow" data-reveal>Collections</p>
       <h1 data-reveal style="--d:90ms">Modern cultural apparel.</h1>
       <p class="lede" data-reveal style="--d:180ms">Signature pieces, collaborations, and ceremonial wear &mdash; each rooted in a specific Rwandan reference and made to order.</p>
-      <div class="page-hero__meta" data-reveal style="--d:270ms">
-        <div><strong>Made to order</strong> every piece</div>
-        <div><strong>Umushanana &amp; Umwashi</strong> references</div>
-        <div><strong>Pre-order</strong> via the studio</div>
-      </div>
     </div>
   </section>
 
@@ -77,6 +78,7 @@
       <div class="filter-bar" data-target="collection-grid" role="group" aria-label="Filter collections">
         <button class="filter-btn is-active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="signature">Signature</button>
+        <button class="filter-btn" data-filter="textile">Ishema textiles</button>
         <button class="filter-btn" data-filter="ceremonial">Ceremonial</button>
         <button class="filter-btn" data-filter="collaboration">Collaboration</button>
         <button class="filter-btn" data-filter="vintage">Vintage</button>
@@ -91,7 +93,7 @@
             <span class="card__meta">Umushanana inspired</span>
             <h3>Ishema Shirt Dress</h3>
             <p>A structured shirt dress built on the drape of the Umushanana, reworked as considered daily wear.</p>
-            <a href="shop.html" class="u-line card__cta">Order on WhatsApp <span class="arrow">&rarr;</span></a>
+            <a href="shop.html" class="btn btn--ghost card__cta">Order on WhatsApp <span class="arrow">&rarr;</span></a>
           </div>
         </article>
 
@@ -103,7 +105,7 @@
             <span class="card__meta">Umwashi inspired</span>
             <h3>Ishema Look</h3>
             <p>A full silhouette carrying Umwashi headwear detail through into the tailoring &mdash; made for occasions with presence.</p>
-            <a href="shop.html" class="u-line card__cta">Order on WhatsApp <span class="arrow">&rarr;</span></a>
+            <a href="shop.html" class="btn btn--ghost card__cta">Order on WhatsApp <span class="arrow">&rarr;</span></a>
           </div>
         </article>
 
@@ -112,10 +114,10 @@
             <span class="card__tag">Collab</span>
           </div>
           <div class="card__body">
-            <span class="card__meta">With Alyn Sano &amp; Mani Martin</span>
+            <span class="card__meta">Ishema signature</span>
             <h3>Urumuri Look</h3>
-            <p>A standout piece created in collaboration with Rwandan artists Alyn Sano and Mani Martin.</p>
-            <a href="gallery.html" class="u-line card__cta">See it in the gallery <span class="arrow">&rarr;</span></a>
+            <p>A standout Ishema look, shaped by expressive draping and contemporary Rwandan style.</p>
+            <a href="gallery.html" class="btn btn--ghost card__cta">See it in the gallery <span class="arrow">&rarr;</span></a>
           </div>
         </article>
 
@@ -127,7 +129,7 @@
             <span class="card__meta">Ceremonial</span>
             <h3>Traditional wedding wear</h3>
             <p>Ceremonial looks for the Rwandan wedding day, built around family and cultural detail from first fitting to final piece.</p>
-            <a href="custom-design.html" class="u-line card__cta">Start a consultation <span class="arrow">&rarr;</span></a>
+            <a href="custom-design.html" class="btn btn--ghost card__cta">Start a consultation <span class="arrow">&rarr;</span></a>
           </div>
         </article>
 
@@ -139,7 +141,7 @@
             <span class="card__meta">Ceremonial</span>
             <h3>Introduction &amp; dowry looks</h3>
             <p>Coordinated looks for introduction ceremonies, designed for the whole wedding party.</p>
-            <a href="contact.html" class="u-line card__cta">Discuss your ceremony <span class="arrow">&rarr;</span></a>
+            <a href="contact.html" class="btn btn--ghost card__cta">Discuss your ceremony <span class="arrow">&rarr;</span></a>
           </div>
         </article>
 
@@ -151,7 +153,55 @@
             <span class="card__meta">Vintage</span>
             <h3>Vintage-inspired tailoring</h3>
             <p>Menswear and womenswear that borrows from vintage cut and proportion, made in our own fabrics.</p>
-            <a href="shop.html" class="u-line card__cta">Ask about availability <span class="arrow">&rarr;</span></a>
+            <a href="shop.html" class="btn btn--ghost card__cta">Ask about availability <span class="arrow">&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="card" data-cat="signature" data-reveal>
+          <div class="card__media style-image-card" style="background-image: url('Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4360.jpg'); background-position: center 25%;">
+            <span class="card__tag">Signature</span>
+          </div>
+          <div class="card__body">
+            <span class="card__meta">Sculpted drape</span>
+            <h3>Ishema Draped Silhouette</h3>
+            <p>A flowing, sculptural shape from the Ishema collection, made to order for your fit and occasion.</p>
+            <a href="shop.html" class="btn btn--ghost card__cta">Explore shop <span class="arrow">&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="card" data-cat="textile" data-reveal>
+          <div class="card__media style-image-card" style="background-image: url('Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4133.jpg'); background-position: center 30%;">
+            <span class="card__tag card__tag--dark">Ishema</span>
+          </div>
+          <div class="card__body">
+            <span class="card__meta">Dyed textile</span>
+            <h3>Ishema Color and Cloth</h3>
+            <p>Expressive color and fabric bring a distinctive surface to the collection's contemporary silhouettes.</p>
+            <a href="gallery.html" class="btn btn--ghost card__cta">View textile details <span class="arrow">&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="card" data-cat="signature" data-reveal>
+          <div class="card__media style-image-card" style="background-image: url('Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4320.jpg'); background-position: center 25%;">
+            <span class="card__tag card__tag--dark">Made to order</span>
+          </div>
+          <div class="card__body">
+            <span class="card__meta">Contemporary heritage</span>
+            <h3>Layered Occasion Look</h3>
+            <p>Layered draping with a modern take on Rwandan heritage, tailored for celebrations and special events.</p>
+            <a href="shop.html" class="btn btn--ghost card__cta">Ask about this look <span class="arrow">&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="card" data-cat="textile" data-reveal>
+          <div class="card__media style-image-card" style="background-image: url('Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4153.jpg'); background-position: center 30%;">
+            <span class="card__tag">Ishema</span>
+          </div>
+          <div class="card__body">
+            <span class="card__meta">Textile study</span>
+            <h3>Ishema Dyed Fabric</h3>
+            <p>A closer look at the color and texture behind the collection's statement pieces.</p>
+            <a href="gallery.html" class="btn btn--ghost card__cta">See the full gallery <span class="arrow">&rarr;</span></a>
           </div>
         </article>
       </div>
@@ -201,7 +251,6 @@
         <h4>Reach us</h4>
         <ul>
           <li><a href="tel:+250799658607">+250 799 658 607</a></li>
-          <li><a href="tel:+250786134003">+250 786 134 003</a></li>
           <li>Zaria Court House, Remera, Kigali</li>
           <li><a href="contact.html">Tap for directions</a></li>
         </ul>

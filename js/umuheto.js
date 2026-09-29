@@ -182,6 +182,23 @@
     var heroMedia = doc.querySelector(".hero__media");
 
     /* ============================================================
+       COLLECTIONS COVER SLIDESHOW
+       ============================================================ */
+    var collectionsSlideshow = doc.querySelector("[data-collections-slideshow]");
+    if (collectionsSlideshow && !reduceMotion) {
+      var collectionSlides = collectionsSlideshow.querySelectorAll(".page-hero__slide");
+      var collectionSlideIndex = 0;
+
+      if (collectionSlides.length > 1) {
+        setInterval(function () {
+          collectionSlides[collectionSlideIndex].classList.remove("is-active");
+          collectionSlideIndex = (collectionSlideIndex + 1) % collectionSlides.length;
+          collectionSlides[collectionSlideIndex].classList.add("is-active");
+        }, 2000);
+      }
+    }
+
+    /* ============================================================
        SCROLL PROGRESS — a thin gold thread at the very top
        ============================================================ */
     var progress = doc.querySelector(".scroll-progress");
@@ -327,10 +344,27 @@
         e.preventDefault();
         var status = doc.querySelector("#form-status");
         var name = (form.querySelector("#name") && form.querySelector("#name").value.trim()) || "";
+        var phone = (form.querySelector("#phone") && form.querySelector("#phone").value.trim()) || "";
+        var interest = (form.querySelector("#interest") && form.querySelector("#interest").value) || "";
+        var message = (form.querySelector("#message") && form.querySelector("#message").value.trim()) || "";
+        var whatsappMessage = [
+          "Hello UMUHETO Creative,",
+          "",
+          "Name: " + name,
+          "Phone or WhatsApp: " + phone,
+          "Interested in: " + interest,
+          "Message: " + message
+        ].join("\n");
+
+        window.open(
+          "https://wa.me/250799658607?text=" + encodeURIComponent(whatsappMessage),
+          "_blank",
+          "noopener,noreferrer"
+        );
         if (status) {
           status.textContent =
             "Thank you" + (name ? ", " + name : "") +
-            ". The studio has received your interest — for now, please reach us directly on WhatsApp (+250 799 658 607) or phone (+250 786 134 003) to confirm your order.";
+            ". WhatsApp is opening with your message ready to send.";
           status.hidden = false;
           status.classList.remove("is-in");
           void status.offsetWidth;
