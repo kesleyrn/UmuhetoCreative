@@ -182,6 +182,22 @@
     var heroMedia = doc.querySelector(".hero__media");
 
     /* ============================================================
+       HOME HERO SLIDESHOW
+       ============================================================ */
+    var heroSlides = doc.querySelectorAll(".hero__media .hero__bg");
+    var heroSlideIndex = 0;
+
+    if (heroSlides.length > 1 && !reduceMotion) {
+      setInterval(function () {
+        heroSlides[heroSlideIndex].classList.remove("is-active");
+        heroSlides[heroSlideIndex].setAttribute("aria-hidden", "true");
+        heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
+        heroSlides[heroSlideIndex].classList.add("is-active");
+        heroSlides[heroSlideIndex].setAttribute("aria-hidden", "false");
+      }, 2000);
+    }
+
+    /* ============================================================
        COLLECTIONS COVER SLIDESHOW
        ============================================================ */
     var collectionsSlideshow = doc.querySelector("[data-collections-slideshow]");
