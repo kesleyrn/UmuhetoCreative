@@ -29,7 +29,13 @@
       title: "Ceremonial Wear",
       description: "Heritage-led looks for weddings, introductions, and meaningful family occasions. We shape every piece around your event, cultural details, and preferred fit.",
       photos: ["3V9A3950.jpg", "3V9A3775.jpg", "3V9A3741.jpg", "3V9A4201.jpg"],
-      looks: ["Traditional wedding look", "Contemporary Umushanana", "Introduction ceremony look", "Modern heritage layers"]
+      looks: ["Traditional wedding look", "Contemporary Umushanana", "Introduction ceremony look", "Modern heritage layers"],
+      lookDescriptions: [
+        "A graceful wedding silhouette tailored around your family traditions, ceremony details, and preferred fit.",
+        "A contemporary interpretation of the Umushanana, balancing the traditional drape with a modern finish.",
+        "A made-to-measure look for introduction and dowry celebrations, shaped around your cultural preferences.",
+        "Expressive layers and contemporary tailoring for a distinctive, coordinated ceremonial outfit."
+      ]
     },
     "vintage-tailoring": {
       eyebrow: "Made to order / Tailoring",
@@ -58,15 +64,79 @@
     return imageRoot + file;
   }
 
+  function preparePhoto(photoUrl) {
+    if (preparePhoto.files[photoUrl]) return Promise.resolve(preparePhoto.files[photoUrl]);
+    if (preparePhoto.pending[photoUrl]) return preparePhoto.pending[photoUrl];
+    if (typeof File === "undefined") return Promise.resolve(null);
+
+    preparePhoto.pending[photoUrl] = fetch(photoUrl).then(function (response) {
+      if (!response.ok) throw new Error("Unable to load the selected booking photo.");
+      return response.blob();
+    }).then(function (photoBlob) {
+      var fileName = photoUrl.split("/").pop().split("?")[0] || "booking-reference.jpg";
+      var photoFile = new File([photoBlob], fileName, { type: photoBlob.type || "image/jpeg" });
+      preparePhoto.files[photoUrl] = photoFile;
+      return photoFile;
+    }).catch(function () {
+      return null;
+    }).then(function (photoFile) {
+      delete preparePhoto.pending[photoUrl];
+      return photoFile;
+    });
+    return preparePhoto.pending[photoUrl];
+  }
+  preparePhoto.files = Object.create(null);
+  preparePhoto.pending = Object.create(null);
+
+  function shareBooking(message, photoUrl, photoFile, status) {
+    var hasShareablePhotoLink = /^https?:/.test(photoUrl);
+    var messageWithPhotoLink = message + (hasShareablePhotoLink ? "\nReference photo: " + photoUrl : "");
+    var whatsappUrl = "https://wa.me/250799658607?text=" + encodeURIComponent(messageWithPhotoLink);
+
+    function openWhatsAppWithPhotoLink() {
+      status.textContent = hasShareablePhotoLink
+        ? "Opening WhatsApp with your booking details and a link to the selected photo. Attach the photo in WhatsApp if it is not included automatically."
+        : "Opening WhatsApp with your booking details. Attach the selected photo manually in WhatsApp.";
+      status.hidden = false;
+      var whatsappWindow = window.open(whatsappUrl, "_blank");
+      if (whatsappWindow) whatsappWindow.opener = null;
+      else window.location.assign(whatsappUrl);
+    }
+
+    if (!photoFile || !navigator.share || !navigator.canShare || !navigator.canShare({ files: [photoFile] })) {
+      openWhatsAppWithPhotoLink();
+      return;
+    }
+
+    navigator.share({
+      title: "UMUHETO Creative booking",
+      text: message,
+      files: [photoFile]
+    }).then(function () {
+      status.textContent = "Share sheet opened. Choose WhatsApp to send your booking details and selected photo.";
+    }).catch(function (error) {
+      if (error && error.name === "AbortError") {
+        status.textContent = "Photo sharing was cancelled; no booking message was sent.";
+        return;
+      }
+      openWhatsAppWithPhotoLink();
+    });
+  }
+
   function renderDetail() {
     var root = document.querySelector("[data-collection-detail]");
     if (!root) return;
 
     var collection = collections[root.getAttribute("data-collection-detail")];
     if (!collection) return;
+    var params = new URLSearchParams(window.location.search);
+    var requestedProduct = params.get("product");
+    var requestedLook = params.get("look");
+    var selectedLookIndex = requestedLook === null ? 0 : Number(requestedLook);
+    if (!Number.isInteger(selectedLookIndex) || selectedLookIndex < 0 || selectedLookIndex >= collection.photos.length) selectedLookIndex = 0;
 
     var lookOptions = collection.photos.map(function (photo, index) {
-      return '<label class="look-option"><input type="radio" name="look" value="' + collection.looks[index] + '"' + (index === 0 ? " checked" : "") + ' data-look-image="' + imageUrl(photo) + '"><img src="' + imageUrl(photo) + '" alt="' + collection.looks[index] + '"><span>' + collection.looks[index] + "</span></label>";
+      return '<label class="look-option"><input type="radio" name="look" value="' + collection.looks[index] + '"' + (index === selectedLookIndex ? " checked" : "") + ' data-look-image="' + imageUrl(photo) + '"><img src="' + imageUrl(photo) + '" alt="' + collection.looks[index] + '" loading="lazy" decoding="async"><span>' + collection.looks[index] + "</span>" + (collection.lookDescriptions ? '<small class="look-option__description">' + collection.lookDescriptions[index] + "</small>" : "") + "</label>";
     }).join("");
 
     var colorOptions = colors.map(function (color, index) {
@@ -74,13 +144,13 @@
     }).join("");
 
     var thumbs = collection.photos.map(function (photo, index) {
-      return '<button type="button" class="collection-detail__thumb' + (index === 0 ? " is-active" : "") + '" data-photo="' + imageUrl(photo) + '" aria-label="View photo ' + (index + 1) + '"><img src="' + imageUrl(photo) + '" alt=""></button>';
+      return '<button type="button" class="collection-detail__thumb' + (index === selectedLookIndex ? " is-active" : "") + '" data-photo="' + imageUrl(photo) + '" aria-label="View photo ' + (index + 1) + '"><img src="' + imageUrl(photo) + '" alt="" loading="lazy" decoding="async"></button>';
     }).join("");
 
     root.innerHTML = '<div class="wrap">' +
       '<p class="collection-detail__crumb"><a href="../collections.html">Collections</a> / ' + collection.title + "</p>" +
       '<div class="grid grid--2 collection-detail__layout">' +
-        '<div class="collection-detail__visual"><img class="collection-detail__main-image" src="' + imageUrl(collection.photos[0]) + '" alt="' + collection.title + '"><div class="collection-detail__thumbs">' + thumbs + "</div></div>" +
+        '<div class="collection-detail__visual"><img class="collection-detail__main-image" src="' + imageUrl(collection.photos[selectedLookIndex]) + '" alt="' + collection.title + '" fetchpriority="high" decoding="async"><div class="collection-detail__thumbs">' + thumbs + "</div></div>" +
         '<div class="collection-detail__content"><p class="eyebrow">' + collection.eyebrow + '</p><h1>' + collection.title + '</h1><p class="collection-detail__intro">' + collection.description + '</p>' +
           '<div class="collection-detail__price"><strong>Made to order</strong>Final fabric, fitting, and lead time confirmed with the studio.</div>' +
           '<div class="collection-detail__section"><h2>Choose your look</h2><div class="look-options">' + lookOptions + "</div></div>" +
@@ -90,7 +160,7 @@
             '<div class="field"><label for="booking-phone">Phone or WhatsApp number</label><input id="booking-phone" name="phone" type="tel" autocomplete="tel" required></div>' +
             '<div class="field"><label for="booking-date">Event date, if known</label><input id="booking-date" name="eventDate" type="date"></div>' +
             '<div class="field"><label>Measurements</label><div class="booking-form__choice"><label><input type="radio" name="measurement" value="I will visit the shop for measurements" required> I will visit the studio</label><label><input type="radio" name="measurement" value="I will provide measurements remotely"> I will provide measurements later</label></div></div>' +
-            '<div class="field"><label for="booking-notes">Notes or fit requests</label><textarea id="booking-notes" name="notes" rows="3" placeholder="Anything you would like us to know"></textarea></div>' +
+            '<div class="field"><label for="booking-requirements">Product requirements</label><textarea id="booking-requirements" name="requirements" rows="4" placeholder="Fabric, fit, design details, sizing, or anything else needed" required></textarea></div>' +
             '<button class="btn btn--solid booking-form__submit" type="submit">Send booking request <span class="arrow">&rarr;</span></button><p class="collection-detail__status" aria-live="polite" hidden></p>' +
           "</form></div></div></div>";
 
@@ -103,31 +173,56 @@
       });
     });
 
-    root.querySelectorAll('input[name="look"]').forEach(function (input) {
-      input.addEventListener("change", function () { mainImage.src = input.getAttribute("data-look-image"); });
-    });
+    var form = root.querySelector("#collection-booking-form");
+    var submitButton = form.querySelector(".booking-form__submit");
+    var status = form.querySelector(".collection-detail__status");
+    var selectedPhotoUrl;
+    function prepareSelectedPhoto(input) {
+      selectedPhotoUrl = new URL(input.getAttribute("data-look-image"), window.location.href).href;
+      if (!navigator.share || !navigator.canShare || typeof File === "undefined") return;
 
-    root.querySelector("#collection-booking-form").addEventListener("submit", function (event) {
+      submitButton.disabled = true;
+      status.textContent = "Preparing the selected product photo...";
+      status.hidden = false;
+      preparePhoto(selectedPhotoUrl).then(function (photoFile) {
+        if (selectedPhotoUrl !== new URL(input.getAttribute("data-look-image"), window.location.href).href) return;
+        submitButton.disabled = false;
+        if (photoFile) status.hidden = true;
+        else status.textContent = "The photo could not be prepared for sharing. You can still send the booking details and attach the photo manually in WhatsApp.";
+      });
+    }
+
+    root.querySelectorAll('input[name="look"]').forEach(function (input) {
+      input.addEventListener("change", function () {
+        mainImage.src = input.getAttribute("data-look-image");
+        prepareSelectedPhoto(input);
+      });
+    });
+    prepareSelectedPhoto(root.querySelector('input[name="look"]:checked'));
+
+    form.addEventListener("submit", function (event) {
       event.preventDefault();
       var form = event.currentTarget;
       var values = new FormData(form);
-      var selectedLook = root.querySelector('input[name="look"]:checked').value;
+      var selectedLookInput = root.querySelector('input[name="look"]:checked');
+      var selectedLook = selectedLookInput.value;
       var selectedColor = root.querySelector('input[name="color"]:checked').value;
+      selectedPhotoUrl = new URL(selectedLookInput.getAttribute("data-look-image"), window.location.href).href;
       var message = [
         "Hello UMUHETO Creative, I would like to book this design.",
+        "PRODUCT",
+        "Product: " + (requestedProduct || collection.title),
         "Collection: " + collection.title,
         "Selected look: " + selectedLook,
         "Preferred color: " + selectedColor,
+        "CUSTOMER AND BOOKING",
         "Name: " + values.get("name"),
         "Phone or WhatsApp: " + values.get("phone"),
         "Event date: " + (values.get("eventDate") || "Not set yet"),
-        "Measurements: " + values.get("measurement"),
-        "Notes: " + (values.get("notes") || "None")
+        "Measurement plan: " + values.get("measurement"),
+        "Product requirements: " + values.get("requirements")
       ].join("\n");
-      var status = form.querySelector(".collection-detail__status");
-      status.textContent = "Opening WhatsApp with your booking details ready to send.";
-      status.hidden = false;
-      window.open("https://wa.me/250799658607?text=" + encodeURIComponent(message), "_blank", "noopener,noreferrer");
+      shareBooking(message, selectedPhotoUrl, preparePhoto.files[selectedPhotoUrl], status);
     });
   }
 

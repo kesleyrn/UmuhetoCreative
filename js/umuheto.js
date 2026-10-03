@@ -22,6 +22,37 @@
 
   ready(function () {
 
+    var lazyBackgrounds = doc.querySelectorAll(".hero__bg, .card__media.style-image-card, .feature__media, .gallery-item");
+    if ("IntersectionObserver" in window) {
+      var backgroundObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var element = entry.target;
+          var backgroundImage = element.getAttribute("data-lazy-background");
+          if (backgroundImage) {
+            element.style.backgroundImage = backgroundImage;
+            element.removeAttribute("data-lazy-background");
+            element.setAttribute("data-background-loaded", "");
+          }
+          observer.unobserve(element);
+        });
+      }, { rootMargin: "250px 0px" });
+
+      lazyBackgrounds.forEach(function (element) {
+        var backgroundImage = element.getAttribute("data-lazy-background");
+        if (!backgroundImage || backgroundImage === "none") return;
+        element.style.backgroundImage = "none";
+        backgroundObserver.observe(element);
+      });
+    } else {
+      lazyBackgrounds.forEach(function (element) {
+        var backgroundImage = element.getAttribute("data-lazy-background");
+        if (!backgroundImage) return;
+        element.style.backgroundImage = backgroundImage;
+        element.removeAttribute("data-lazy-background");
+      });
+    }
+
     /* ============================================================
        VEIL — cinematic page-load entrance + crossfade between pages
        ============================================================ */
