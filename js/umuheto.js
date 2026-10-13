@@ -229,18 +229,39 @@
     }
 
     /* ============================================================
-       COLLECTIONS COVER SLIDESHOW
+       INTERIOR PAGE HERO SLIDESHOW
        ============================================================ */
-    var collectionsSlideshow = doc.querySelector("[data-collections-slideshow]");
-    if (collectionsSlideshow && !reduceMotion) {
-      var collectionSlides = collectionsSlideshow.querySelectorAll(".page-hero__slide");
-      var collectionSlideIndex = 0;
+    var pageHeroSlideshow = doc.querySelector("[data-page-hero-slideshow]");
+    if (pageHeroSlideshow && !reduceMotion) {
+      var pageHeroSlides = pageHeroSlideshow.querySelectorAll(".page-hero__slide");
+      var pageHeroSlideIndex = 0;
 
-      if (collectionSlides.length > 1) {
+      if (pageHeroSlides.length > 1) {
         setInterval(function () {
-          collectionSlides[collectionSlideIndex].classList.remove("is-active");
-          collectionSlideIndex = (collectionSlideIndex + 1) % collectionSlides.length;
-          collectionSlides[collectionSlideIndex].classList.add("is-active");
+          if (doc.visibilityState === "hidden") return;
+          pageHeroSlides[pageHeroSlideIndex].classList.remove("is-active");
+          pageHeroSlideIndex = (pageHeroSlideIndex + 1) % pageHeroSlides.length;
+          pageHeroSlides[pageHeroSlideIndex].classList.add("is-active");
+        }, 2000);
+      }
+    }
+
+    /* ============================================================
+       ABOUT STORY SLIDESHOW
+       ============================================================ */
+    var storySlideshow = doc.querySelector("[data-story-slideshow]");
+    if (storySlideshow && !reduceMotion) {
+      var storySlides = storySlideshow.querySelectorAll(".about-story__slide");
+      var storySlideIndex = 0;
+
+      if (storySlides.length > 1) {
+        setInterval(function () {
+          if (doc.visibilityState === "hidden") return;
+          storySlides[storySlideIndex].classList.remove("is-active");
+          storySlides[storySlideIndex].setAttribute("aria-hidden", "true");
+          storySlideIndex = (storySlideIndex + 1) % storySlides.length;
+          storySlides[storySlideIndex].classList.add("is-active");
+          storySlides[storySlideIndex].setAttribute("aria-hidden", "false");
         }, 2000);
       }
     }
