@@ -330,8 +330,8 @@ em i, em{ font-style: italic; font-family: var(--display); font-weight: 340; }
 /* mobile menu */
 .mobile-menu{
   position: fixed; inset: 0; z-index: 90;
-  background: var(--ink);
-  color: var(--paper);
+  background: #fff;
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -344,33 +344,27 @@ em i, em{ font-style: italic; font-family: var(--display); font-weight: 340; }
 .mobile-menu__link{
   display: flex;
   align-items: baseline;
-  gap: 1rem;
-  font-family: var(--display);
-  font-size: clamp(2rem, 8vw, 3.2rem);
-  font-weight: 400;
-  color: var(--paper);
+  gap: .75rem;
+  font-family: "Work Sans", sans-serif;
+  font-size: clamp(1.35rem, 5vw, 2.1rem);
+  font-weight: 500;
+  color: var(--ink);
   padding: .45em 0;
-  border-bottom: 1px solid var(--line-light);
   opacity: 0;
   transform: translateY(24px);
   transition: opacity .6s var(--ease), transform .6s var(--ease), color .3s ease;
 }
 .is-open .mobile-menu__link{ opacity: 1; transform: none; }
-.mobile-menu__link em{
-  font-style: italic;
-  font-weight: 300;
-  font-size: .5em;
-  color: var(--ink);
-}
-.mobile-menu__link:hover, .mobile-menu__link.is-current{ color: var(--paper); }
+.mobile-menu__link em{ display: none; }
+.mobile-menu__link:hover, .mobile-menu__link.is-current{ color: var(--stone); }
 .mobile-menu__note{
   margin-top: 2rem;
   font-size: .82rem;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: rgba(246,244,239,0.5);
+  color: var(--stone);
 }
-.mobile-menu__note a{ color: var(--paper); }
+.mobile-menu__note a{ color: var(--ink); }
 
 @media (max-width: 1024px){
   .site-nav{ display: none; }
@@ -729,6 +723,11 @@ em i, em{ font-style: italic; font-family: var(--display); font-weight: 340; }
 .page-hero--slideshow h1,
 .page-hero--slideshow .lede{ color: var(--paper); }
 .page-hero--slideshow .eyebrow{ color: rgba(246,244,239,.78); }
+.page-hero--slideshow .page-hero__meta{
+  color: rgba(246,244,239,.78);
+  border-top-color: var(--line-light);
+}
+.page-hero--slideshow .page-hero__meta strong{ color: var(--paper); }
 .page-hero::before{
   content:"";
   position: absolute;
@@ -1142,6 +1141,40 @@ em i, em{ font-style: italic; font-family: var(--display); font-weight: 340; }
   color: var(--ink);
   font-weight: 600;
 }
+.about-vision-mission{ background: var(--paper-2); }
+.about-vision-mission__grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+.about-vision-mission__card{
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.about-vision-mission__card h2{
+  margin-bottom: 1.2rem;
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  line-height: 1.2;
+}
+.about-vision-mission__card p,
+.about-vision-mission__card li{
+  color: var(--stone);
+  font-size: clamp(.98rem, 1.2vw, 1.08rem);
+  line-height: 1.75;
+}
+.about-vision-mission__card p{ margin-bottom: 0; }
+.about-vision-mission__card ul{
+  display: grid;
+  gap: .8rem;
+  list-style: disc;
+  padding-left: 1.2rem;
+}
+.about-vision-mission__closing{
+  margin-top: 1.5rem;
+  color: var(--ink) !important;
+  font-weight: 600;
+}
 .about-story__slideshow{
   grid-column: 8 / span 5;
   position: relative;
@@ -1201,6 +1234,7 @@ em i, em{ font-style: italic; font-family: var(--display); font-weight: 340; }
   .about-story__layout{ grid-template-columns: minmax(0, 1fr); }
   .about-story__text, .about-story__slideshow{ grid-column: 1 / -1; }
   .about-story__slideshow{ width: 100%; max-width: 640px; justify-self: center; aspect-ratio: 5 / 4; }
+  .about-vision-mission__grid{ grid-template-columns: 1fr; }
   .about-founder__layout{ grid-template-columns: minmax(0, 1fr); }
   .about-founder__text, .about-founder__media{ grid-column: 1 / -1; grid-row: auto; }
   .about-founder__media{ order: 1; width: 100%; max-width: 520px; justify-self: center; }
@@ -1321,14 +1355,15 @@ em i, em{ font-style: italic; font-family: var(--display); font-weight: 340; }
   position: relative;
 }
 .inspiration-intro h2{
-  max-width: 15ch;
-  font-family: var(--display);
-  font-size: clamp(2.6rem, 6vw, 5rem);
-  font-weight: 400;
-  letter-spacing: -.045em;
-  line-height: .98;
+  max-width: none;
+  white-space: nowrap;
+  font-family: var(--body);
+  font-size: clamp(1.1rem, 5vw, 3.2rem);
+  font-weight: 440;
+  letter-spacing: -.015em;
+  line-height: 1.04;
 }
-.inspiration-intro h2 em{ color: var(--stone); }
+.inspiration-intro h2 em{ color: inherit; font-family: inherit; font-style: normal; }
 .inspiration-intro > p:last-child{ max-width: 62ch; margin-bottom: 0; }
 @media (min-width: 881px){
   .inspiration-intro{ margin-right: auto; margin-left: auto; text-align: center; }
