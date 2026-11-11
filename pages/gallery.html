@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="../Images/Logos/Logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/umuheto.css">
 </head>
 <body id="top">
@@ -39,7 +39,7 @@
       </ul>
     </nav>
     <div class="header-actions">
-      <a class="btn btn--solid btn--xs btn-cta" href="https://wa.me/250799658607" target="_blank" rel="noopener">Book on WhatsApp</a>
+      <a class="btn btn--solid btn--xs btn-cta" href="collections.html">Explore collections</a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -60,16 +60,16 @@
   <!-- ======================= PAGE HERO ======================= -->
   <section class="page-hero page-hero--slideshow">
     <div class="page-hero__slides" aria-hidden="true">
-      <img class="page-hero__slide is-active" src="../Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A4345.jpg" alt="" />
+      <img class="page-hero__slide is-active" src="../Images/Collection/Inyota/ISHEMA/Umuheto_Creative/3V9A4345.jpg" alt="" />
     </div>
     <div class="wrap">
       <p class="eyebrow" data-reveal>Gallery</p>
-      <h1 data-reveal style="--d:90ms">Looks from the studio.</h1>
-      <p class="lede" data-reveal style="--d:180ms">Explore Ishema's draped silhouettes, dyed textiles, ceremonial pieces, and studio details. Tap any look to open it.</p>
+      <h1 data-reveal style="--d:90ms">Worn beyond the studio.</h1>
+      <p class="lede" data-reveal style="--d:180ms">A look at the artists, creatives, and friends who have worn UMUHETO Creative.</p>
       <div class="page-hero__meta" data-reveal style="--d:270ms">
-        <div><strong>Filter by piece</strong> or occasion</div>
-        <div><strong>26 looks</strong> in this edit</div>
-        <div><strong>@umuheto_creative</strong> full archive</div>
+        <div><strong>Artists and creatives</strong> in UMUHETO</div>
+        <div><strong>Looks worn</strong> for stages and celebrations</div>
+        <div><strong>Made in Rwanda</strong> with pride</div>
       </div>
     </div>
   </section>
@@ -79,15 +79,16 @@
     <div class="wrap">
       <div class="filter-bar" data-target="gallery-grid" role="group" aria-label="Filter gallery">
         <button class="filter-btn is-active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="signature">Signature</button>
-        <button class="filter-btn" data-filter="textile">Ishema textiles</button>
-        <button class="filter-btn" data-filter="ceremonial">Ceremonial</button>
         <button class="filter-btn" data-filter="collaboration">Collaboration</button>
-        <button class="filter-btn" data-filter="vintage">Vintage</button>
-        <button class="filter-btn" data-filter="studio">Studio</button>
       </div>
 
-      <div class="gallery-grid" id="gallery-grid">
+      <div class="grid grid--3" data-reveal-group hidden>
+        <article class="card"><a class="card__media style-image-card" href="Subpages/Collection-Shirt-Dress.html" aria-label="Explore Inyota" data-lazy-background="url('../Images/Collection/Inyota/3V9A6633.jpg.jpeg')"></a><div class="card__body"><span class="card__meta">Collection</span><h3>Inyota</h3><a href="Subpages/Collection-Shirt-Dress.html" class="u-line card__cta">View the collection <span class="arrow">&rarr;</span></a></div></article>
+        <article class="card"><a class="card__media style-image-card" href="Subpages/Collection-Layered-Look.html" aria-label="Explore Ngabo Y'isunzu" data-lazy-background="url('../Images/Collection/Ngabo%20yisunzu/Seer.JPG.jpeg')"></a><div class="card__body"><span class="card__meta">Collection</span><h3>Ngabo Y'isunzu</h3><a href="Subpages/Collection-Layered-Look.html" class="u-line card__cta">View the collection <span class="arrow">&rarr;</span></a></div></article>
+        <article class="card"><a class="card__media style-image-card" href="Subpages/Collection-Ceremonial.html" aria-label="Explore ISOÔKO" data-lazy-background="url('../Images/Collection/Celemonial/IMG_0964.JPG.jpeg')"></a><div class="card__body"><span class="card__meta">Ceremonial wear</span><h3>ISOÔKO</h3><a href="Subpages/Collection-Ceremonial.html" class="u-line card__cta">View the collection <span class="arrow">&rarr;</span></a></div></article>
+      </div>
+
+      <div class="gallery-grid" id="legacy-gallery-grid" hidden>
         <button type="button" class="gallery-item" data-cat="signature" data-title="Ishema Shirt Dress" data-kind="Signature &middot; Umushanana" style="background-size: cover; background-position: center 35%" data-lazy-background="url('../Images/ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/3V9A3793.jpg')">
           <span class="gallery-item__cap"><strong>Ishema Shirt Dress</strong><span>Signature &middot; Umushanana</span></span>
         </button>
@@ -167,9 +168,36 @@
           <span class="gallery-item__cap"><strong>Modern Umushanana</strong><span>Ceremonial &middot; Contemporary heritage</span></span>
         </button>
       </div>
-    </div>
-  </section>
-
+      <script type="application/json" id="gallery-images">
+        [
+          {"image":"Flashback ✨- Our Business Coach, Mentor & Creative Industry Supporter @coachgaellak he looked l.jpg","title":"@coachgaellak","kind":"Business coach and creative industry supporter"},
+          {"image":"GITANGAZA Suit by Umuheto Creative @brucemelodie stunned in our newest creation from the ISÔKO C.jpg","title":"Bruce Melodie","kind":"GITANGAZA suit · ISÔKO collection"},
+          {"image":"A LEGEND. A CULTURE ICON. A TRUE INSPIRATION. 🏹🎯Tonton Mass is a true example of preserving an.jpg","title":"Tonton Mass","kind":"A culture icon and inspiration"},
+          {"image":"Wishing the fashionable @chrisseazy_ a super happy birthday👔 @umuheto_creative 📷 @campxels@the.jpg","title":"@chrisseazy_","kind":"A birthday look by UMUHETO"},
+          {"image":"Wearing our roots,designing our future As #umuhetocreative we are truly proud to style our @city (1).jpg","title":"Wearing our roots","kind":"Styled by UMUHETO Creative"},
+          {"image":"We had the honor to style Coach Gaella — a classic and VIP representation of Rwanda’s young, vis (1).jpg","title":"Coach Gaella","kind":"Styled by UMUHETO Creative"},
+          {"image":"@antonio_uwamahoro, aka Siperansiya, attended the Zacu Gala in @umuheto_creatives dress! Zacu G.jpg","title":"Siperansiya","kind":"Zacu Gala · UMUHETO look"},
+          {"image":"@antonio_uwamahoro, aka Siperansiya, attended the Zacu Gala in @umuheto_creatives dress! Zacu G (2).jpg","title":"Siperansiya","kind":"Zacu Gala · UMUHETO look"},
+          {"image":"@kabano.franco Step in with poise, power, and purpose.Wearing ISHEMA — the pride of our heritage (1).jpg","title":"Franco Kabano","kind":"Wearing ISHEMA"},
+          {"image":"@kabano.franco Step in with poise, power, and purpose.Wearing ISHEMA — the pride of our heritage (2).jpg","title":"Franco Kabano","kind":"Wearing ISHEMA"},
+          {"image":"@umuheto_creative is proud to style the vibrant Rwandan vocalist and coolest superstar, @alynsan (1).jpg","title":"@alynsan","kind":"Styled by UMUHETO Creative"},
+          {"image":"@umuheto_creative is proud to style the vibrant Rwandan vocalist and coolest superstar, @alynsan.jpg","title":"@alynsan","kind":"Styled by UMUHETO Creative"},
+          {"image":"@umuheto_creative styled @andy_bumuntu in Rwema Outfit last night at The Silver Gala!#thesilverg (1).jpg","title":"Andy Bumuntu","kind":"Rwema outfit · Silver Gala"},
+          {"image":"@umuheto_creative styled @andy_bumuntu in Rwema Outfit last night at The Silver Gala!#thesilverg (2).jpg","title":"Andy Bumuntu","kind":"Rwema outfit · Silver Gala"},
+          {"image":"A LEGEND. A CULTURE ICON. A TRUE INSPIRATION. 🏹🎯Tonton Mass is a true example of preserving an (2).jpg","title":"Tonton Mass","kind":"A culture icon and inspiration"},
+          {"image":"Flashback ✨- Our Business Coach, Mentor & Creative Industry Supporter @coachgaellak he looked l (1).jpg","title":"@coachgaellak","kind":"Business coach and creative industry supporter"},
+          {"image":"GITANGAZA Suit by Umuheto Creative @brucemelodie stunned in our newest creation from the ISÔKO C (1).jpg","title":"Bruce Melodie","kind":"GITANGAZA suit · ISÔKO collection"},
+          {"image":"Wearing our roots designing our future 🏹From our heritage to modern elegance. The HAMYA suit is (2).jpg","title":"HAMYA suit","kind":"Heritage-inspired tailoring"},
+          {"image":"Wearing our roots designing our future 🏹From our heritage to modern elegance. The HAMYA suit is.jpg","title":"HAMYA suit","kind":"Heritage-inspired tailoring"},
+          {"image":"Wearing our roots,designing our future As #umuhetocreative we are truly proud to style our @city (2).jpg","title":"Wearing our roots","kind":"Styled by UMUHETO Creative"},
+          {"image":"Wishing the fashionable @chrisseazy_ a super happy birthday👔 @umuheto_creative 📷 @campxels@the (1).jpg","title":"@chrisseazy_","kind":"A birthday look by UMUHETO"},
+          {"image":"🇷🇼RWANDA nziza Rwanda tuvomamo inganzo ,🏹🎯Our culture the origin of New creative ideas Thank (1).jpg","title":"Rwanda nziza","kind":"Our culture, our inspiration"},
+          {"image":"🇷🇼RWANDA nziza Rwanda tuvomamo inganzo ,🏹🎯Our culture the origin of New creative ideas Thank (2).jpg","title":"Rwanda nziza","kind":"Our culture, our inspiration"}
+        ]
+      </script>
+      <div class="gallery-grid" id="gallery-grid" aria-label="UMUHETO Creative clients and collaborators"></div>
+      </div>
+      </section>
   <!-- ======================= CTA BAND ======================= -->
   <section class="sec cta-band">
     <div class="wrap">

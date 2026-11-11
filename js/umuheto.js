@@ -22,19 +22,89 @@
 
   ready(function () {
 
-    var lazyBackgrounds = doc.querySelectorAll(".hero__bg, .card__media.style-image-card, .feature__media, .gallery-item");
+    var movedImagePrefix = "ISHEMA%20ALL%20PHOTOS/Umuheto_Creative/";
+    var collectionImagePrefix = "Collection/Inyota/ISHEMA/Umuheto_Creative/";
+    var galleryGrid = doc.getElementById("gallery-grid");
+    var galleryManifest = doc.getElementById("gallery-images");
+    if (galleryGrid && galleryManifest) {
+      JSON.parse(galleryManifest.textContent).forEach(function (photo) {
+        var imageUrl = "../Images/Collection/Garelly/" + encodeURIComponent(photo.image);
+        var item = doc.createElement("button");
+        var caption = doc.createElement("span");
+        var title = doc.createElement("strong");
+        var kind = doc.createElement("span");
+        item.type = "button";
+        item.className = "gallery-item";
+        item.setAttribute("data-cat", "collaboration");
+        item.setAttribute("data-title", photo.title);
+        item.setAttribute("data-kind", photo.kind);
+        item.setAttribute("data-image-url", imageUrl);
+        item.setAttribute("aria-label", photo.title + ", " + photo.kind);
+        item.setAttribute("data-lazy-background", "url('" + imageUrl + "')");
+        caption.className = "gallery-item__cap";
+        title.textContent = photo.title;
+        kind.textContent = photo.kind;
+        caption.appendChild(title);
+        caption.appendChild(kind);
+        item.appendChild(caption);
+        galleryGrid.appendChild(item);
+      });
+    }
+
+    doc.querySelectorAll("img[src], [data-lazy-background]").forEach(function (element) {
+      var sourceAttribute = element.hasAttribute("src") ? "src" : "data-lazy-background";
+      var source = element.getAttribute(sourceAttribute);
+      if (source && source.indexOf(movedImagePrefix) !== -1) {
+        element.setAttribute(sourceAttribute, source.replace(movedImagePrefix, collectionImagePrefix));
+      }
+    });
+
+    doc.querySelectorAll("img[src]:not([loading])").forEach(function (image) {
+      if (image.closest(".brand-lockup, .footer-wordmark")) return;
+      if (image.classList.contains("page-hero__brand") ||
+          (image.classList.contains("is-active") && image.closest(".page-hero__slides, [data-story-slideshow]"))) {
+        image.loading = "eager";
+        image.fetchPriority = "high";
+      } else {
+        image.loading = "lazy";
+      }
+    });
+
+    function loadLazyBackground(element) {
+      var backgroundImage = element.getAttribute("data-lazy-background");
+      if (!backgroundImage) return Promise.resolve();
+      if (element.backgroundLoadPromise) return element.backgroundLoadPromise;
+
+      var match = backgroundImage.match(/url\((['"]?)(.*?)\1\)/);
+      if (!match) {
+        element.style.backgroundImage = backgroundImage;
+        element.removeAttribute("data-lazy-background");
+        element.setAttribute("data-background-loaded", "");
+        return Promise.resolve();
+      }
+
+      element.backgroundLoadPromise = new Promise(function (resolve) {
+        var image = new Image();
+        function applyBackground() {
+          element.style.backgroundImage = backgroundImage;
+          element.removeAttribute("data-lazy-background");
+          element.setAttribute("data-background-loaded", "");
+          resolve();
+        }
+        image.onload = applyBackground;
+        image.onerror = applyBackground;
+        image.src = match[2];
+      });
+      return element.backgroundLoadPromise;
+    }
+
+    var lazyBackgrounds = doc.querySelectorAll(".hero__bg.is-active, .card__media.style-image-card, .feature__media, .gallery-item");
     if ("IntersectionObserver" in window) {
       var backgroundObserver = new IntersectionObserver(function (entries, observer) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
-          var element = entry.target;
-          var backgroundImage = element.getAttribute("data-lazy-background");
-          if (backgroundImage) {
-            element.style.backgroundImage = backgroundImage;
-            element.removeAttribute("data-lazy-background");
-            element.setAttribute("data-background-loaded", "");
-          }
-          observer.unobserve(element);
+          loadLazyBackground(entry.target);
+          observer.unobserve(entry.target);
         });
       }, { rootMargin: "250px 0px" });
 
@@ -46,10 +116,7 @@
       });
     } else {
       lazyBackgrounds.forEach(function (element) {
-        var backgroundImage = element.getAttribute("data-lazy-background");
-        if (!backgroundImage) return;
-        element.style.backgroundImage = backgroundImage;
-        element.removeAttribute("data-lazy-background");
+        loadLazyBackground(element);
       });
     }
 
@@ -94,29 +161,6 @@
     } else {
       setTimeout(veilIntro, 40);
     }
-
-    /* intercept internal page links for a soft crossfade */
-    doc.addEventListener("click", function (e) {
-      var a = e.target.closest("a");
-      if (!a) return;
-      var href = (a.getAttribute("href") || "").trim();
-      var isInternal =
-        /\.html($|#)/.test(href) &&
-        !href.startsWith("http") &&
-        !href.startsWith("//") &&
-        !href.startsWith("mailto:") &&
-        !href.startsWith("tel:");
-
-      if (isInternal && !e.defaultPrevented && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
-        e.preventDefault();
-        if (reduceMotion) { window.location.href = a.href; return; }
-        sessionStorage.setItem("umuhetoVeil", "exit");
-        if (veil) veil.classList.add("is-visible");
-        setTimeout(function () {
-          window.location.href = a.href;
-        }, 560);
-      }
-    });
 
     setTimeout(veilIntro, 40);
 
@@ -219,13 +263,22 @@
     var heroSlideIndex = 0;
 
     if (heroSlides.length > 1 && !reduceMotion) {
-      setInterval(function () {
+      function advanceHero() {
+        if (doc.visibilityState === "hidden") {
+          setTimeout(advanceHero, 2000);
+          return;
+        }
+        var nextIndex = (heroSlideIndex + 1) % heroSlides.length;
+        loadLazyBackground(heroSlides[nextIndex]).then(function () {
         heroSlides[heroSlideIndex].classList.remove("is-active");
         heroSlides[heroSlideIndex].setAttribute("aria-hidden", "true");
-        heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
+        heroSlideIndex = nextIndex;
         heroSlides[heroSlideIndex].classList.add("is-active");
         heroSlides[heroSlideIndex].setAttribute("aria-hidden", "false");
-      }, 2000);
+          setTimeout(advanceHero, 2000);
+        });
+      }
+      setTimeout(advanceHero, 2000);
     }
 
     /* ============================================================
@@ -325,7 +378,8 @@
        LIGHTBOX
        ============================================================ */
     var lightbox = doc.querySelector(".lightbox");
-    var items = Array.prototype.slice.call(doc.querySelectorAll(".gallery-item"));
+    var items = Array.prototype.slice.call(doc.querySelectorAll(".gallery-item"))
+      .filter(function (item) { return !item.closest("[hidden]"); });
     if (lightbox && items.length) {
       var stage = lightbox.querySelector(".lb-stage");
       var imgBox = lightbox.querySelector(".lb-img");
@@ -350,6 +404,13 @@
       function show(n) {
         idx = (n + items.length) % items.length;
         imgBox.className = "lb-img " + faceClass(items[idx]);
+        var image = imgBox.querySelector("img");
+        if (!image) {
+          image = doc.createElement("img");
+          imgBox.appendChild(image);
+        }
+        image.src = items[idx].getAttribute("data-image-url") || "";
+        image.alt = faceTitle(items[idx]);
         capTitle.textContent = faceTitle(items[idx]);
         capKind.textContent = faceKind(items[idx]);
         count.textContent = (idx + 1) + " / " + items.length;
@@ -357,7 +418,7 @@
 
       function open(n, item) {
         items = Array.prototype.slice.call(doc.querySelectorAll(".gallery-item"))
-          .filter(function (el) { return !el.classList.contains("is-hidden"); });
+          .filter(function (el) { return !el.classList.contains("is-hidden") && !el.closest("[hidden]"); });
         idx = Math.max(items.indexOf(item), 0);
         show(idx);
         lightbox.classList.add("is-open");
