@@ -14,10 +14,7 @@
     return "ISHEMA/Umuheto_Creative/" + file;
   }));
 
-  var ngaboFiles = Array.from({ length: 81 }, function (_, number) {
-    if (number === 55 || number === 71) return null;
-    return number === 0 ? "Seer.JPG.jpeg" : "Seer_" + number + ".JPG.jpeg";
-  }).filter(Boolean);
+  var ngaboFiles = ["Seer_57.JPG.jpeg", "Seer_54.JPG.jpeg", "Seer_59.JPG.jpeg", "Seer_72.JPG.jpeg"];
 
   var collections = {
     inyota: {
@@ -77,6 +74,25 @@
     "vintage-tailoring": "ngabo"
   };
 
+  var featuredLookNames = {
+    "Seer_57.JPG.jpeg": "Ngabo Tracksuit — Black",
+    "Seer_54.JPG.jpeg": "Ngabo Tracksuit — Green",
+    "Seer_59.JPG.jpeg": "Ngabo Tracksuit — White",
+    "Seer_72.JPG.jpeg": "Ngabo T-shirt",
+    "3V9A3793.jpg": "Ishema Shirt Dress",
+    "3V9A3975.jpg": "Ishema Look",
+    "3V9A4345.jpg": "Ishema Shirt Dress",
+    "3V9A4376.jpg": "Ishema Shirt Dress",
+    "3V9A4104.jpg": "Ishema Umwashi Look",
+    "DSC09671.jpg": "Ishema Draped",
+    "3V9A4320.jpg": "Ishema Design",
+    "3V9A4255.jpg": "Ishema Design",
+    "3V9A4282.jpg": "Ishema Design",
+    "IMG_0964.JPG.jpeg": "Ceremonial Look 01",
+    "IMG_0965.JPG.jpeg": "Ceremonial Look 02",
+    "IMG_0966.JPG.jpeg": "Ceremonial Look 03"
+  };
+
   var colors = [
     { name: "As pictured", value: "#80776b" },
     { name: "Ivory", value: "#eee9dc" },
@@ -90,7 +106,8 @@
   }
 
   function makeCard(collection, file, index) {
-    var title = "Look " + (index + 1);
+    var fileName = file.split("/").pop();
+    var title = featuredLookNames[fileName] || "Look " + (index + 1);
     var url = imageUrl(collection, file);
     return '<article class="catalog-card">' +
       '<a class="catalog-card__image" href="?design=' + (index + 1) + '" aria-label="View ' + collection.title + " " + title + '">' +
@@ -193,7 +210,8 @@
 
   function renderDesign(root, collection, designIndex) {
     var file = collection.files[designIndex];
-    var title = "Look " + (designIndex + 1);
+    var fileName = file.split("/").pop();
+    var title = featuredLookNames[fileName] || "Look " + (designIndex + 1);
     var url = imageUrl(collection, file);
     var related = collection.files.map(function (relatedFile, index) {
       return index === designIndex ? "" : makeCard(collection, relatedFile, index);
@@ -204,7 +222,7 @@
       '<div class="design-detail">' +
         '<div class="design-detail__visual"><img class="design-detail__image" src="' + url + '" alt="' + collection.title + ", " + title + '" loading="eager" fetchpriority="high" decoding="async"></div>' +
         '<div class="design-detail__content"><p class="eyebrow">' + collection.title + '</p><h1>' + title + '</h1><p class="lede">This request refers to the exact look shown here. Other designs are listed separately below.</p>' +
-          '<p class="design-detail__reference">Design reference: ' + file.split("/").pop() + '</p>' +
+          '<p class="design-detail__reference">Design reference: ' + fileName + '</p>' +
           '<button class="btn btn--solid design-detail__choose" type="button">Choose this look</button>' +
           '<fieldset class="design-detail__colors" hidden><legend>Choose a colour</legend><p class="collection-detail__note">The studio will confirm fabric availability for your chosen colour.</p><div class="color-options">' +
             colors.map(function (color, index) {
@@ -235,7 +253,7 @@
           "Hello UMUHETO Creative, I would like to order a look.",
           "Collection: " + collection.title,
           "Look: " + title,
-          "Design reference: " + file.split("/").pop(),
+          "Design reference: " + fileName,
           "Preferred colour: " + input.value,
           "Please confirm fabric availability and the next steps."
         ].join("\n");
